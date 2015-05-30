@@ -2,6 +2,10 @@ package com.panicbutton.common;
 
 public class PanicReport {
 
+    public static final String PANIC_REPORT_CLASS = "PanicReport";
+    public static final String LOCATION = "location";
+
+
     private long id;
     private long latitude;
     private long longitude;
@@ -25,5 +29,14 @@ public class PanicReport {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "PanicReport{" +
+                "id=" + id +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 }
