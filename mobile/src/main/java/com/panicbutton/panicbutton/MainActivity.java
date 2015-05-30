@@ -4,9 +4,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.panicbutton.common.Config;
 import com.panicbutton.common.PanicReport;
+import com.parse.ConfigCallback;
 import com.parse.FindCallback;
 import com.parse.Parse;
+import com.parse.ParseConfig;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -36,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
     public void createObjectTest(){
 
         ParseObject parseObject = new ParseObject(PanicReport.PANIC_REPORT_CLASS);
-        // test point -30.042467, -51.222439
+        //-30.040647, -51.188322
         ParseGeoPoint point = new ParseGeoPoint();
-        point.setLatitude(-30.042467);
-        point.setLongitude(-51.222439);
+        point.setLatitude(-30.040647);
+        point.setLongitude(-51.188322);
         parseObject.put(PanicReport.LOCATION, point);
         parseObject.saveInBackground();
 
@@ -48,27 +51,41 @@ public class MainActivity extends AppCompatActivity {
 
     public void retrieveObjectTest(){
 
-        // test near point  -30.040479, -51.218834
+        // test near point  -30.040321, -51.187442
         // test far point -30.043786, -51.183816
-        ParseGeoPoint pointUser = new ParseGeoPoint();
-        pointUser.setLatitude(-30.040479); //near
-        pointUser.setLongitude(-51.218834);
+        final ParseGeoPoint pointUser = new ParseGeoPoint();
+        pointUser.setLatitude(-30.040321);
+        pointUser.setLongitude(-51.187442);
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(PanicReport.PANIC_REPORT_CLASS);
-        query.whereNear(PanicReport.LOCATION, pointUser);
 
-        query.findInBackground(new FindCallback<ParseObject>() {
-               public void done(List<ParseObject> objects, ParseException e) {
-                   if (e == null) {
-                       Log.e(LOG_TAG, "objects retrieved: "+objects.size());
-                   } else {
-                       Log.e(LOG_TAG, "error retrieving objects ");
+        ParseConfig.getInBackground(new ConfigCallback() {
+            @Override
+            public void done(ParseConfig parseConfig, ParseException e) {
+
+                if (e != null) return;
+
+                double nearInKm = parseConfig.getDouble(Config.NEAR_IN_KM, 0.2);
+
+                Log.e("NEAR IN KM", ""+nearInKm);
+
+                ParseQuery<ParseObject> query = ParseQuery.getQuery(PanicReport.PANIC_REPORT_CLASS);
+                query.whereWithinKilometers(PanicReport.LOCATION, pointUser, nearInKm);
+
+                query.findInBackground(new FindCallback<ParseObject>() {
+                       public void done(List<ParseObject> objects, ParseException e) {
+                           if (e == null) {
+                               Log.e(LOG_TAG, "objects retrieved: " + objects.size());
+                           } else {
+                               Log.e(LOG_TAG, "error retrieving objects ");
+                           }
+                       }
                    }
-               }
-           }
-        );
+                );
 
 
+
+            }
+        });
     }
 
 }
