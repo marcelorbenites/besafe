@@ -5,8 +5,8 @@ import android.content.Intent;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
-import com.panicbutton.panicbutton.PanicReport;
-import com.panicbutton.panicbutton.PanicReportProvider;
+import com.panicbutton.common.PanicReport;
+import com.panicbutton.common.PanicReportProvider;
 
 import java.util.List;
 

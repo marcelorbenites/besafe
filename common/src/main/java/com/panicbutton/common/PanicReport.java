@@ -1,4 +1,4 @@
-package com.panicbutton.panicbutton;
+package com.panicbutton.common;
 
 public class PanicReport {
 

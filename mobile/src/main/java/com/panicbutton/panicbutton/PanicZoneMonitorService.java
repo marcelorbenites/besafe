@@ -20,6 +20,8 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.panicbutton.common.PanicReport;
+import com.panicbutton.common.PanicReportProvider;
 
 import java.util.List;
 

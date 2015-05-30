@@ -1,6 +1,7 @@
 package com.panicbutton.panicbutton;
 
 import com.google.android.gms.location.Geofence;
+import com.panicbutton.common.PanicReport;
 
 import java.util.List;
 
