@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">PanicButton</string>
+    <string name="app_name">Be Safe</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="activity_main_enable_danger_zone_monitor">Enble</string>
+    <string name="activity_main_enable_danger_zone_monitor">Enable</string>
     <string name="activity_main_panic_report">Panic!</string>
+    <string name="service_danger_zone_entrance_alert">Your are entering a danger zone!</string>
+    <string name="activity_main_error_starting_application">Error!!!</string>
 </resources>

@@ -7,6 +7,7 @@ import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -27,10 +28,14 @@ import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, ResultCallback<LocationSettingsResult>, DialogInterface.OnDismissListener {
+
+    @InjectView(R.id.activity_main_report_button) Button reportButton;
+    @InjectView(R.id.activity_main_start_stop_button) Button startStopButton;
 
     public static final int REQUEST_RESOLVE_ERROR = 1001;
     public static final String ERROR_DIALOG_TAG = "ERROR_DIALOG_TAG";
@@ -67,6 +72,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         locationSettingsRequest = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build();
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "UsT15Ykv77V7m663xg7w5rFgaEvjYC9CF57lkV9c", "Y0uuUxxNOLmYifyFztIkueJVJJ0lkQ6bZTetm8P1");
+
+        reportButton.setEnabled(false);
+        startStopButton.setEnabled(false);
+
+        ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
+            @Override public void done(ParseException e) {
+                if (e == null) {
+                    reportButton.setEnabled(true);
+                    startStopButton.setEnabled(true);
+                } else {
+                    Toast.makeText(MainActivity.this, R.string.activity_main_error_starting_application, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void connectToGooglePlayServices() {
@@ -116,7 +135,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         LocationServices.SettingsApi.checkLocationSettings(googleApiClient, locationSettingsRequest).setResultCallback(this);
     }
 
-    @Override public void onConnectionSuspended(int i) {}
+    @Override public void onConnectionSuspended(int i) {
+    }
 
     @Override public void onLocationChanged(Location location) {
         LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
@@ -161,7 +181,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     status.startResolutionForResult(
                             this,
                             REQUEST_CHECK_SETTINGS);
-                } catch (IntentSender.SendIntentException ignored) {}
+                } catch (IntentSender.SendIntentException ignored) {
+                }
                 break;
             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
             default:

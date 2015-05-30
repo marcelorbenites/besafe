@@ -184,9 +184,7 @@ public class DangerZoneMonitorService extends Service implements
     private void loadNewDangerZones(Location location) {
         if (location != null) {
             Log.d("PanicButton", String.format("Received location %s", location.toString()));
-            final ParseGeoPoint pointUser = new ParseGeoPoint();
-            pointUser.setLatitude(location.getLatitude());
-            pointUser.setLongitude(location.getLongitude());
+            final ParseGeoPoint pointUser = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery(PanicReport.PANIC_REPORT_CLASS);
             query.whereWithinKilometers(PanicReport.LOCATION, pointUser, 1);

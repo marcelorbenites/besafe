@@ -1,6 +1,8 @@
 package com.panicbutton.panicbutton;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
@@ -15,6 +17,9 @@ import java.util.List;
 public class DangerZoneEntranceService extends IntentService {
 
     private DangerZoneProvider dangerZoneProvider;
+    private BeSafeNotificationBuilder notificationBuilder;
+    private NotificationManager notificationManager;
+
 
     public DangerZoneEntranceService() {
         super("com.panicbutton.android.DangerZoneEntranceService");
@@ -23,6 +28,8 @@ public class DangerZoneEntranceService extends IntentService {
     @Override public void onCreate() {
         super.onCreate();
         dangerZoneProvider = InMemoryDangerZoneProvider.getInstance();
+        notificationBuilder = new BeSafeNotificationBuilder(this);
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     @Override
@@ -39,6 +46,7 @@ public class DangerZoneEntranceService extends IntentService {
                 dangerZone = dangerZoneProvider.get(geofenceList.get(i).getRequestId());
                 if (dangerZone != null) {
                     if (event.getGeofenceTransition() == Geofence.GEOFENCE_TRANSITION_ENTER) {
+                        notificationManager.notify(dangerZone.hashCode(),notificationBuilder.build(getString(R.string.service_danger_zone_entrance_alert)));
                         Log.d("PanicButton", String.format("Entered danger zone %s", dangerZone.getId()));
                     }
                 }

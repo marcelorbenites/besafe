@@ -1,8 +1,22 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="BeSafeTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorButtonNormal">?attr/colorPrimaryDark</item>
+        <item name="actionBarStyle">@style/Widget.BeSafeTheme.ActionBar</item>
     </style>
+
+    <style name="Widget.BeSafeTheme.ActionBar" parent="Widget.AppCompat.ActionBar.Solid">
+        <item name="titleTextStyle">@style/TextAppearance.BeSafeTheme.Widget.ActionBar.Title</item>
+    </style>
+
+    <style name="TextAppearance.BeSafeTheme.Widget.ActionBar.Title" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>
+
 
 </resources>
