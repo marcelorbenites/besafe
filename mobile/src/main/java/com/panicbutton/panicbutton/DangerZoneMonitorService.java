@@ -25,6 +25,7 @@ import com.panicbutton.common.InMemoryDangerZoneProvider;
 import com.panicbutton.common.DangerZoneProvider;
 import com.panicbutton.common.PanicReport;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
@@ -94,6 +95,8 @@ public class DangerZoneMonitorService extends Service implements
     }
 
     @Override public void onCreate() {
+
+        Parse.initialize(this, "UsT15Ykv77V7m663xg7w5rFgaEvjYC9CF57lkV9c", "Y0uuUxxNOLmYifyFztIkueJVJJ0lkQ6bZTetm8P1");
 
         final HandlerThread thread = new HandlerThread("IntentService[com.panicbutton.android.PanicZoneMonitorService]");
         thread.start();
