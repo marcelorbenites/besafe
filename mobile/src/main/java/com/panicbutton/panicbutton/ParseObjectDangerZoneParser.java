@@ -1,6 +1,5 @@
 package com.panicbutton.panicbutton;
 
-import com.panicbutton.common.DangerZone;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 

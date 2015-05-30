@@ -20,10 +20,6 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.panicbutton.common.DangerZone;
-import com.panicbutton.common.InMemoryDangerZoneProvider;
-import com.panicbutton.common.DangerZoneProvider;
-import com.panicbutton.common.PanicReport;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -194,18 +190,18 @@ public class DangerZoneMonitorService extends Service implements
             query.whereNotEqualTo(MainActivity.PARSE_INSTALLATION, ParseInstallation.getCurrentInstallation());
             query.findInBackground(new FindCallback<ParseObject>() {
                                        public void done(List<ParseObject> objects, ParseException e) {
-                                           if (e == null) {
-                                               Log.d("PanicButton", String.format("Objects retrieved: %d", objects.size()));
-                                               List<DangerZone> dangerZones = new ArrayList<>();
-                                               for (Object object : objects) {
-                                                   dangerZones.add(dangerZoneParser.parse(object));
-                                               }
-                                               startActionInBackground(GEOFENCE_UPDATE, dangerZones);
-                                           } else {
-                                               Log.e("PanicButton", String.format("Error retrieving objects %s", e.toString()));
-                                           }
-                                       }
-                                   }
+                   if (e == null) {
+                       Log.d("PanicButton", String.format("Objects retrieved: %d", objects.size()));
+                       List<DangerZone> dangerZones = new ArrayList<>();
+                       for (Object object : objects) {
+                           dangerZones.add(dangerZoneParser.parse(object));
+                       }
+                       startActionInBackground(GEOFENCE_UPDATE, dangerZones);
+                   } else {
+                       Log.e("PanicButton", String.format("Error retrieving objects %s", e.toString()));
+                   }
+               }
+           }
             );
         }
     }

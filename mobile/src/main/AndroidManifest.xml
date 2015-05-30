@@ -13,6 +13,7 @@
         android:label="@string/app_name"
         android:theme="@style/BeSafeTheme" >
         <activity
+            android:theme="@style/BeSafeTheme.NoActionBar"
             android:name=".MainActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >

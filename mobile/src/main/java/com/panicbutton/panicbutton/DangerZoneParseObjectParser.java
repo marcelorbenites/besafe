@@ -3,21 +3,20 @@ package com.panicbutton.panicbutton;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
-public class PanicReportParseObjectParser implements ParseObjectParser {
+public class DangerZoneParseObjectParser implements ParseObjectParser {
 
     @Override public ParseObject parse(Object object) {
-        PanicReport panicReport;
-        if (object instanceof PanicReport) {
-            panicReport = (PanicReport) object;
+        DangerZone dangerZone;
+        if (object instanceof DangerZone) {
+            dangerZone = (DangerZone) object;
         } else {
             throw new IllegalArgumentException("Must be ParseObject");
         }
 
-        ParseGeoPoint location = new ParseGeoPoint(panicReport.getLatitude(), panicReport.getLongitude());
+        ParseGeoPoint location = new ParseGeoPoint(dangerZone.getLatitude(), dangerZone.getLongitude());
         ParseObject parseObject = ParseObject.create(PanicReport.PANIC_REPORT_CLASS);
         parseObject.put(PanicReport.LOCATION, location);
-        parseObject.put(PanicReport.RADIUS, panicReport.getRadius());
+        parseObject.put(PanicReport.RADIUS, dangerZone.getRadius());
         return parseObject;
-
     }
 }

@@ -2,8 +2,6 @@ package com.panicbutton.panicbutton;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
-import com.panicbutton.common.DangerZone;
-import com.panicbutton.common.PanicZone;
 
 import java.util.ArrayList;
 import java.util.List;

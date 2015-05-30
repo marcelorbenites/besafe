@@ -8,9 +8,6 @@ import android.util.Log;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
-import com.panicbutton.common.DangerZone;
-import com.panicbutton.common.DangerZoneProvider;
-import com.panicbutton.common.InMemoryDangerZoneProvider;
 
 import java.util.List;
 

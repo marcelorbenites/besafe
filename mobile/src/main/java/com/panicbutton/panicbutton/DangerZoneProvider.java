@@ -1,4 +1,4 @@
-package com.panicbutton.common;
+package com.panicbutton.panicbutton;
 
 import java.util.List;
 

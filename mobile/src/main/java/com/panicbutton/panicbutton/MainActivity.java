@@ -20,7 +20,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.panicbutton.common.PanicReport;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
@@ -34,7 +33,6 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, ResultCallback<LocationSettingsResult>, DialogInterface.OnDismissListener {
 
-    @InjectView(R.id.activity_main_report_button) Button reportButton;
     @InjectView(R.id.activity_main_start_stop_button) Button startStopButton;
 
     public static final int REQUEST_RESOLVE_ERROR = 1001;
@@ -73,13 +71,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "UsT15Ykv77V7m663xg7w5rFgaEvjYC9CF57lkV9c", "Y0uuUxxNOLmYifyFztIkueJVJJ0lkQ6bZTetm8P1");
 
-        reportButton.setEnabled(false);
         startStopButton.setEnabled(false);
 
         ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
             @Override public void done(ParseException e) {
                 if (e == null) {
-                    reportButton.setEnabled(true);
                     startStopButton.setEnabled(true);
                 } else {
                     Toast.makeText(MainActivity.this, R.string.activity_main_error_starting_application, Toast.LENGTH_SHORT).show();
@@ -120,10 +116,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @OnClick(R.id.activity_main_start_stop_button) void onStartStop() {
         startService(new Intent(this, DangerZoneMonitorService.class).setAction(DangerZoneMonitorService.ACTION_INITIALIZE));
-    }
-
-    @OnClick(R.id.activity_main_report_button) void onPanicReport() {
-        connectToGooglePlayServices();
     }
 
     @Override public void onResult(LocationSettingsResult result) {

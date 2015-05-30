@@ -1,4 +1,4 @@
-package com.panicbutton.common;
+package com.panicbutton.panicbutton;
 
 
 import android.os.Parcel;
@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 public class DangerZone implements Parcelable {
 
+    public static final String DANGER_ZONE_CLASS = "DangerZoneClass";
     public static final String SETTINGS_RADIUS = "dangerZoneRadius";
     public static final String LOCATION = "location";
 
