@@ -1,4 +1,4 @@
-package com.panicbutton.panicbutton.geofence;
+package com.panicbutton.panicbutton;
 
 import android.app.IntentService;
 import android.content.Intent;

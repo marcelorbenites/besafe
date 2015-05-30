@@ -1,4 +1,4 @@
-package com.panicbutton.panicbutton.geofence;
+package com.panicbutton.panicbutton;
 
 import android.app.PendingIntent;
 import android.app.Service;
@@ -20,9 +20,6 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.panicbutton.panicbutton.PanicReport;
-import com.panicbutton.panicbutton.PanicReportProvider;
-import com.panicbutton.panicbutton.PanicZoneGeofenceAdapter;
 
 import java.util.List;
 
