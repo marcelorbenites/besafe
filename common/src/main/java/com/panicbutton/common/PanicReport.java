@@ -5,38 +5,25 @@ public class PanicReport {
     public static final String PANIC_REPORT_CLASS = "PanicReport";
     public static final String LOCATION = "location";
 
+    private final int radius;
+    private final double latitude;
+    private final double longitude;
 
-    private long id;
-    private long latitude;
-    private long longitude;
-
-    public PanicReport(long id, long latitude, long longitude) {
+    public PanicReport(double latitude, double longitude, int radius) {
         this.latitude = latitude;
         this.longitude = longitude;
+        this.radius = radius;
     }
 
-    public long getId() {
-        return id;
+    public int getRadius() {
+        return radius;
     }
 
-    public long getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public long getLongitude() {
+    public double getLongitude() {
         return longitude;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "PanicReport{" +
-                "id=" + id +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                '}';
     }
 }

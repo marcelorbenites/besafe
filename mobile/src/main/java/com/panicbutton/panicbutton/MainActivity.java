@@ -1,7 +1,8 @@
 package com.panicbutton.panicbutton;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.panicbutton.common.Config;
@@ -17,6 +18,9 @@ import com.parse.ParseQuery;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class MainActivity extends AppCompatActivity {
 
     private final String LOG_TAG = "MainActivity";
@@ -25,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
 
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
@@ -33,11 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
         createObjectTest();
         retrieveObjectTest();
-
     }
 
-    public void createObjectTest(){
-
+    public void createObjectTest() {
         ParseObject parseObject = new ParseObject(PanicReport.PANIC_REPORT_CLASS);
         //-30.040647, -51.188322
         ParseGeoPoint point = new ParseGeoPoint();
@@ -45,11 +48,13 @@ public class MainActivity extends AppCompatActivity {
         point.setLongitude(-51.188322);
         parseObject.put(PanicReport.LOCATION, point);
         parseObject.saveInBackground();
-
-
     }
 
-    public void retrieveObjectTest(){
+    @OnClick(R.id.activity_main_start_stop_butoon) void onStartStop() {
+        startService(new Intent(this, DangerZoneMonitorService.class).setAction(DangerZoneMonitorService.ACTION_INITIALIZE));
+    }
+
+    public void retrieveObjectTest() {
 
         // test near point  -30.040321, -51.187442
         // test far point -30.043786, -51.183816
@@ -66,22 +71,21 @@ public class MainActivity extends AppCompatActivity {
 
                 double nearInKm = parseConfig.getDouble(Config.NEAR_IN_KM, 0.2);
 
-                Log.e("NEAR IN KM", ""+nearInKm);
+                Log.e("NEAR IN KM", "" + nearInKm);
 
                 ParseQuery<ParseObject> query = ParseQuery.getQuery(PanicReport.PANIC_REPORT_CLASS);
                 query.whereWithinKilometers(PanicReport.LOCATION, pointUser, nearInKm);
 
                 query.findInBackground(new FindCallback<ParseObject>() {
-                       public void done(List<ParseObject> objects, ParseException e) {
-                           if (e == null) {
-                               Log.e(LOG_TAG, "objects retrieved: " + objects.size());
-                           } else {
-                               Log.e(LOG_TAG, "error retrieving objects ");
-                           }
-                       }
-                   }
+                                           public void done(List<ParseObject> objects, ParseException e) {
+                                               if (e == null) {
+                                                   Log.e(LOG_TAG, "objects retrieved: " + objects.size());
+                                               } else {
+                                                   Log.e(LOG_TAG, "error retrieving objects ");
+                                               }
+                                           }
+                                       }
                 );
-
 
 
             }
