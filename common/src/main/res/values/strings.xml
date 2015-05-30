@@ -2,5 +2,6 @@
     <string name="app_name">Common</string>
 
     <string name="message_intro_map">Use long press to dismiss</string>
+    <string name="google_maps_key">AIzaSyCKtwHn-dBdVpSovnKMF-tMM5vJ0Bhp3Ko</string>
 
 </resources>

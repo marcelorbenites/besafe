@@ -11,12 +11,31 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    signingConfigs {
+        panic {
+            keyAlias 'panic'
+            keyPassword 'android'
+            storeFile file('../key.jks')
+            storePassword 'android'
+        }
+    }
+
+
     buildTypes {
+
+        debug {
+            signingConfig signingConfigs.panic
+        }
+
         release {
+            signingConfig signingConfigs.panic
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -30,8 +49,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     wearApp project(':wear')
     compile 'com.android.support:appcompat-v7:22.1.1'
-    compile 'com.google.android.gms:play-services:7.3.0'
+    compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.parse.bolts:bolts-android:1.+'
-    compile 'com.jakewharton:butterknife:6.1.0'
     compile project(':common')
 }
