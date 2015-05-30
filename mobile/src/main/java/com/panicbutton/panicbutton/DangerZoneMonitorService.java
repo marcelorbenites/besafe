@@ -20,12 +20,14 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.panicbutton.common.DangerZone;
+import com.panicbutton.common.InMemoryDangerZoneProvider;
 import com.panicbutton.common.PanicReport;
-import com.panicbutton.common.PanicReportProvider;
+import com.panicbutton.common.DangerZoneProvider;
 
 import java.util.List;
 
-public class PanicZoneMonitorService extends Service implements
+public class DangerZoneMonitorService extends Service implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
@@ -40,7 +42,7 @@ public class PanicZoneMonitorService extends Service implements
     private volatile ServiceHandler serviceHandler;
 
     private LocationRequest locationRequest;
-    private PanicReportProvider panicReportProvider;
+    private DangerZoneProvider dangerZoneProvider;
     private Intent intent;
     private GoogleApiClient googleApiClient;
 
@@ -53,14 +55,14 @@ public class PanicZoneMonitorService extends Service implements
         public void handleMessage(Message msg) {
             switch (msg.arg1) {
                 case GEOFENCE_UPDATE:
-                    List<PanicReport> newGeoFences = (List) msg.obj;
-                    addPanicZones(newGeoFences);
-                    List<PanicReport> oldGeoFences = panicReportProvider.getAll();
-                    oldGeoFences.removeAll(newGeoFences);
-                    removeGeofences(oldGeoFences);
+                    List<DangerZone> newZones = (List) msg.obj;
+                    addDangerZones(newZones);
+                    List<DangerZone> oldGeoFences = dangerZoneProvider.getAll();
+                    oldGeoFences.removeAll(newZones);
+                    removeDangerZones(oldGeoFences);
                     break;
                 case GEOFENCE_STOP:
-                    removeGeofences(panicReportProvider.getAll());
+                    removeDangerZones(dangerZoneProvider.getAll());
                     break;
                 default:
                     break;
@@ -68,17 +70,17 @@ public class PanicZoneMonitorService extends Service implements
             stopSelf();
         }
 
-        private void addPanicZones(List<PanicReport> panicZones) {
-            if (panicZones.size() > 0) {
-                persistGeofences(panicZones);
-                startMonitoringGeofences(panicZones);
+        private void addDangerZones(List<DangerZone> dangerZones) {
+            if (dangerZones.size() > 0) {
+                persistDangerZones(dangerZones);
+                startMonitoringDangerZones(dangerZones);
             }
         }
 
-        private void removeGeofences(List<PanicReport> panicZones) {
-            if (panicZones.size() > 0) {
-                deleteGeofences(panicZones);
-                stopMonitoringGeofences(panicZones);
+        private void removeDangerZones(List<DangerZone> dangerZones) {
+            if (dangerZones.size() > 0) {
+                deleteGeofences(dangerZones);
+                stopMonitoringDangerZones(dangerZones);
             }
         }
     }
@@ -89,6 +91,8 @@ public class PanicZoneMonitorService extends Service implements
         thread.start();
         serviceLooper = thread.getLooper();
         serviceHandler = new ServiceHandler(serviceLooper);
+
+        dangerZoneProvider = new InMemoryDangerZoneProvider();
 
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
@@ -149,7 +153,7 @@ public class PanicZoneMonitorService extends Service implements
     }
 
     private void removeLocationUpdatesRequest() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, getGeofencePendingIntent(PanicZoneMonitorService.class, PanicZoneMonitorService.ACTION_GEOFENCE_UPDATE)).setResultCallback(new ResultCallback<Status>() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, getGeofencePendingIntent(DangerZoneMonitorService.class, DangerZoneMonitorService.ACTION_GEOFENCE_UPDATE)).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(Status status) {
                 if (status.isSuccess()) {
@@ -160,7 +164,7 @@ public class PanicZoneMonitorService extends Service implements
     }
 
     private void requestLocationUpdates(final LocationRequest locationRequest) {
-        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, getGeofencePendingIntent(PanicZoneMonitorService.class, PanicZoneMonitorService.ACTION_GEOFENCE_UPDATE)).setResultCallback(new ResultCallback<Status>() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, getGeofencePendingIntent(DangerZoneMonitorService.class, DangerZoneMonitorService.ACTION_GEOFENCE_UPDATE)).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(Status status) {
                 if (status.isSuccess()) {
@@ -176,10 +180,10 @@ public class PanicZoneMonitorService extends Service implements
         }
     }
 
-    private void startMonitoringGeofences(List<PanicReport> panicReports) {
-        final int size = panicReports.size();
+    private void startMonitoringDangerZones(List<DangerZone> dangerZones) {
+        final int size = dangerZones.size();
         if (size > 0) {
-            Status status = LocationServices.GeofencingApi.addGeofences(googleApiClient, PanicZoneGeofenceAdapter.toGeofecens(panicReports), getGeofencePendingIntent(PanicZoneEntranceService.class)).await();
+            Status status = LocationServices.GeofencingApi.addGeofences(googleApiClient, DangerZoneGeofenceAdapter.toGeofecens(dangerZones), getGeofencePendingIntent(DangerZoneEntranceService.class)).await();
             if (status.isSuccess()) {
                 Log.d("PanicButton", String.format("Started monitoring %d panic zones.", size));
             }
@@ -188,21 +192,18 @@ public class PanicZoneMonitorService extends Service implements
         }
     }
 
-    private void persistGeofences(List<PanicReport> panicReports) {
-        int size = panicReports.size();
-        PanicReport report;
-        for (int i = 0; i < size; i++) {
-            report = panicReports.get(i);
-            report.setId(panicReportProvider.insert(report));
+    private void persistDangerZones(List<DangerZone> dangerZones) {
+        for(DangerZone dangerZone: dangerZones) {
+            dangerZoneProvider.insert(dangerZone);
         }
     }
 
-    private void stopMonitoringGeofences(List<PanicReport> panicZones) {
-        final int size = panicZones.size();
+    private void stopMonitoringDangerZones(List<DangerZone> dangerZones) {
+        final int size = dangerZones.size();
         if (size > 0) {
-            Status status = LocationServices.GeofencingApi.removeGeofences(googleApiClient, PanicZoneGeofenceAdapter.toGeofecensId(panicZones)).await();
+            Status status = LocationServices.GeofencingApi.removeGeofences(googleApiClient, DangerZoneGeofenceAdapter.toGeofecensId(dangerZones)).await();
             if (status.isSuccess()) {
-                Log.d("PanicButton", String.format("Stopped monitoring %d panic zones.", panicZones.size()));
+                Log.d("PanicButton", String.format("Stopped monitoring %d panic zones.", dangerZones.size()));
             } else {
                 Log.d("PanicButton", String.format("Failed stop monitoring panic zoneswith status %s.", status.toString()));
 
@@ -212,12 +213,12 @@ public class PanicZoneMonitorService extends Service implements
         }
     }
 
-    private void deleteGeofences(List<PanicReport> panicZones) {
-        int size = panicZones.size();
+    private void deleteGeofences(List<DangerZone> dangerZones) {
+        int size = dangerZones.size();
         for (int i = 0; i < size; i++) {
-            panicReportProvider.delete(panicZones.get(i).getId());
+            dangerZoneProvider.delete(dangerZones.get(i).getId());
         }
-        Log.d("PanicButton", String.format("Removed %d panic zones.", panicZones.size()));
+        Log.d("PanicButton", String.format("Removed %d panic zones.", dangerZones.size()));
     }
 
     private PendingIntent getGeofencePendingIntent(Class serviceClass) {

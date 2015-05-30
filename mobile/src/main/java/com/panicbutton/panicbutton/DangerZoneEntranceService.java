@@ -5,21 +5,23 @@ import android.content.Intent;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
-import com.panicbutton.common.PanicReport;
-import com.panicbutton.common.PanicReportProvider;
+import com.panicbutton.common.DangerZone;
+import com.panicbutton.common.DangerZoneProvider;
+import com.panicbutton.common.InMemoryDangerZoneProvider;
 
 import java.util.List;
 
-public class PanicZoneEntranceService extends IntentService {
+public class DangerZoneEntranceService extends IntentService {
 
-    private PanicReportProvider reportProvider;
+    private DangerZoneProvider dangerZoneProvider;
 
-    public PanicZoneEntranceService() {
+    public DangerZoneEntranceService() {
         super("com.useaurea.aurea.internal.geofence.GeofenceEventIntentService");
     }
 
     @Override public void onCreate() {
         super.onCreate();
+        dangerZoneProvider = new InMemoryDangerZoneProvider();
     }
 
     @Override
@@ -29,10 +31,10 @@ public class PanicZoneEntranceService extends IntentService {
             List<Geofence> geofenceList = event.getTriggeringGeofences();
             int size = ((geofenceList == null) ? 0 : geofenceList.size());
 
-            PanicReport report;
+            DangerZone dangerZone;
             for (int i = 0; i < size; i++) {
-                report = reportProvider.get(Long.valueOf(geofenceList.get(i).getRequestId()));
-                if (report != null) {
+                dangerZone = dangerZoneProvider.get(geofenceList.get(i).getRequestId());
+                if (dangerZone != null) {
                     if (event.getGeofenceTransition() == Geofence.GEOFENCE_TRANSITION_ENTER) {
                         //TODO warn the user;
                     }
