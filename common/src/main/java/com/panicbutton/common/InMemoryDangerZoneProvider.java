@@ -5,9 +5,17 @@ import java.util.List;
 
 public class InMemoryDangerZoneProvider implements DangerZoneProvider {
 
+    private static InMemoryDangerZoneProvider instance;
     private final List<DangerZone> dangerZones;
 
-    public InMemoryDangerZoneProvider() {
+    public static InMemoryDangerZoneProvider getInstance() {
+        if (instance == null) {
+            instance = new InMemoryDangerZoneProvider();
+        }
+        return instance;
+    }
+
+    private InMemoryDangerZoneProvider() {
         dangerZones = new ArrayList<>();
     }
 
@@ -27,7 +35,7 @@ public class InMemoryDangerZoneProvider implements DangerZoneProvider {
     }
 
     @Override public List<DangerZone> getAll() {
-        return dangerZones;
+        return new ArrayList<>(dangerZones);
     }
 
     @Override public boolean delete(String id) {

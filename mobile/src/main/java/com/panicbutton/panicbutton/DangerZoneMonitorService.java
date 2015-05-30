@@ -27,6 +27,7 @@ import com.panicbutton.common.PanicReport;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -100,7 +101,7 @@ public class DangerZoneMonitorService extends Service implements
         serviceHandler = new ServiceHandler(serviceLooper);
 
         dangerZoneParser = new ParseObjectDangerZoneParser(3);
-        dangerZoneProvider = new InMemoryDangerZoneProvider();
+        dangerZoneProvider = InMemoryDangerZoneProvider.getInstance();
 
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
@@ -189,21 +190,21 @@ public class DangerZoneMonitorService extends Service implements
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery(PanicReport.PANIC_REPORT_CLASS);
             query.whereWithinKilometers(PanicReport.LOCATION, pointUser, 1);
-
+            query.whereNotEqualTo(MainActivity.PARSE_INSTALLATION, ParseInstallation.getCurrentInstallation());
             query.findInBackground(new FindCallback<ParseObject>() {
-                   public void done(List<ParseObject> objects, ParseException e) {
-                       if (e == null) {
-                           Log.d("PanicButton", String.format("Objects retrieved: %d", objects.size()));
-                           List<DangerZone> dangerZones = new ArrayList<>();
-                           for (Object object: objects) {
-                               dangerZones.add(dangerZoneParser.parse(object));
-                           }
-                           startActionInBackground(GEOFENCE_UPDATE, dangerZones);
-                       } else {
-                           Log.e("PanicButton", String.format("Error retrieving objects %s", e.toString()));
-                       }
-                   }
-               }
+                                       public void done(List<ParseObject> objects, ParseException e) {
+                                           if (e == null) {
+                                               Log.d("PanicButton", String.format("Objects retrieved: %d", objects.size()));
+                                               List<DangerZone> dangerZones = new ArrayList<>();
+                                               for (Object object : objects) {
+                                                   dangerZones.add(dangerZoneParser.parse(object));
+                                               }
+                                               startActionInBackground(GEOFENCE_UPDATE, dangerZones);
+                                           } else {
+                                               Log.e("PanicButton", String.format("Error retrieving objects %s", e.toString()));
+                                           }
+                                       }
+                                   }
             );
         }
     }

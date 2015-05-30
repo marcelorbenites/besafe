@@ -4,6 +4,7 @@ public class PanicReport {
 
     public static final String PANIC_REPORT_CLASS = "PanicReport";
     public static final String LOCATION = "location";
+    public static final String RADIUS = "radius";
 
     private final int radius;
     private final double latitude;

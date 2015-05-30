@@ -22,7 +22,7 @@ public class DangerZoneEntranceService extends IntentService {
 
     @Override public void onCreate() {
         super.onCreate();
-        dangerZoneProvider = new InMemoryDangerZoneProvider();
+        dangerZoneProvider = InMemoryDangerZoneProvider.getInstance();
     }
 
     @Override
