@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Common</string>
+
+    <string name="message_intro_map">Use long press to dismiss</string>
+
 </resources>
