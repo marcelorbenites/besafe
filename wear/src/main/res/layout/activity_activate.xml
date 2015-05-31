@@ -24,7 +24,7 @@
     <Button
         android:layout_width="104dp"
         android:layout_height="104dp"
-        android:background="@drawable/selector_activate_btn"
+        android:background="@drawable/bt_activate"
         android:layout_centerInParent="true"
         android:id="@+id/button" />
 
