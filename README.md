@@ -4,7 +4,8 @@
 
 Be Safe
 
-O BeSafe é um App para Android produzido no hackaton de Android Wear no GDG Poa com um um objetivo: tornar a cidade mais segura.
+O BeSafe é um App para Android produzido durante o hackaton de Android Wear do GDG Poa (30/5/2015).
+A proposta é simples: tornar a cidade mais segura.
 
 O objetivo é audacioso, mas acreditamos que é importante começar.
 Juntamos dois programadores que se conheciam e dois designers que se também conheciam para nos divertir durante esse dia.
@@ -17,6 +18,8 @@ Para o desenvolvimento, utilizamos estruturas bastante interessantes, como GeoFe
 Durante o dia e diante das dificuldades, optamos por focar na feature mais importante: informar ao usuário que ele está entrando em uma área insegura.
 E conseguimos :)
 Após boas horas de desenvolvimento, conseguimos integrar o backend, o mobile e o relógio para entregar um pouco mais de segurança para os usuários.
+
+Time: Marcelo Benites (dev) | Douglas Ritter (dev) | Rafael Weiblen (designer) | Diego Hainzenreder (designer)
 
 ![alt tag](https://raw.githubusercontent.com/marcelorbenites/besafe/master/images/DSC_0173.jpg)
 
