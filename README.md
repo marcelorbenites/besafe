@@ -1,4 +1,7 @@
-# besafe
+# Be Safe
+
+![alt tag](https://raw.githubusercontent.com/marcelorbenites/besafe/master/images/besafe_button.png)
+
 Be Safe
 
 O BeSafe é um App para Android produzido no hackaton de Android Wear no GDG Poa com um um objetivo: tornar a cidade mais segura.
