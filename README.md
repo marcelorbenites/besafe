@@ -18,11 +18,11 @@ Durante o dia e diante das dificuldades, optamos por focar na feature mais impor
 E conseguimos :)
 Após boas horas de desenvolvimento, conseguimos integrar o backend, o mobile e o relógio para entregar um pouco mais de segurança para os usuários.
 
-![alt tag](https://raw.githubusercontent.com/marcelorbenites/besafe/master/images/DSC_0207.jpg)
-
 ![alt tag](https://raw.githubusercontent.com/marcelorbenites/besafe/master/images/DSC_0173.jpg)
 
 ![alt tag](https://raw.githubusercontent.com/marcelorbenites/besafe/master/images/DSC_0169.jpg)
+
+![alt tag](https://raw.githubusercontent.com/marcelorbenites/besafe/master/images/DSC_0207.jpg)
 
 ![alt tag](https://raw.githubusercontent.com/marcelorbenites/besafe/master/images/DSC_0210.jpg)
 
