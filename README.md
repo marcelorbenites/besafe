@@ -1,6 +1,6 @@
 # Be Safe
 
-![alt tag](https://raw.githubusercontent.com/marcelorbenites/besafe/master/images/besafe_button.png)
+![alt tag](https://raw.githubusercontent.com/marcelorbenites/besafe/master/images/besafe_button_250.png)
 
 Be Safe
 
