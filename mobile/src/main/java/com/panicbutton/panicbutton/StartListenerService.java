@@ -30,38 +30,27 @@ import com.google.android.gms.wearable.WearableListenerService;
 
 import java.io.IOException;
 
-/**
- * Listens for disconnection from home device.
- */
 public class StartListenerService extends WearableListenerService {
 
     private static final String LOG_TAG = "StartListenerService";
-
-    public static final String PATH_ACTIVATE_SERVICE = "/activate_service";
-    public static final String ACTION_ACTIVATE_SERVICE = "action_activate_service";
     public static final String FIELD_ACTIVATE_SERVICE = "field_activate_service";
-
-    private static final String FIELD_ALARM_ON = "alarm_on";
-
-    private static int mOrigVolume;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.e(LOG_TAG, "ON CREATE");
+        Log.d(LOG_TAG, "onCreate");
 
     }
 
     @Override
     public void onDestroy() {
-        // Reset the alarm volume to the user's original setting.
         super.onDestroy();
     }
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
 
-        Log.e(LOG_TAG, "ON DATA CHANGED");
+        Log.d(LOG_TAG, "onDataChanged");
 
         if (Log.isLoggable(LOG_TAG, Log.DEBUG)) {
             Log.d(LOG_TAG, "onDataChanged: " + dataEvents + " for " + getPackageName());
@@ -71,8 +60,7 @@ public class StartListenerService extends WearableListenerService {
                 Log.i(LOG_TAG, event + " deleted");
             } else if (event.getType() == DataEvent.TYPE_CHANGED) {
 
-                Boolean turnOn =
-                        DataMap.fromByteArray(event.getDataItem().getData()).get(FIELD_ACTIVATE_SERVICE);
+                Boolean turnOn = DataMap.fromByteArray(event.getDataItem().getData()).get(FIELD_ACTIVATE_SERVICE);
 
                 if(turnOn){
                     Intent intent = new Intent(this, DangerZoneMonitorService.class);

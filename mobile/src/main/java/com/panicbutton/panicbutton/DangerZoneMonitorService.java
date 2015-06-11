@@ -92,8 +92,6 @@ public class DangerZoneMonitorService extends Service implements
 
     @Override public void onCreate() {
 
-        Parse.initialize(this, "UsT15Ykv77V7m663xg7w5rFgaEvjYC9CF57lkV9c", "Y0uuUxxNOLmYifyFztIkueJVJJ0lkQ6bZTetm8P1");
-
         final HandlerThread thread = new HandlerThread("IntentService[com.panicbutton.android.PanicZoneMonitorService]");
         thread.start();
         serviceLooper = thread.getLooper();

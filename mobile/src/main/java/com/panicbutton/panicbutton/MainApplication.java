@@ -9,8 +9,8 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-//        Parse.initialize(this, "UsT15Ykv77V7m663xg7w5rFgaEvjYC9CF57lkV9c", "Y0uuUxxNOLmYifyFztIkueJVJJ0lkQ6bZTetm8P1");
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "UsT15Ykv77V7m663xg7w5rFgaEvjYC9CF57lkV9c", "Y0uuUxxNOLmYifyFztIkueJVJJ0lkQ6bZTetm8P1");
 
     }
 }
