@@ -6,9 +6,12 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         GoogleApiClient.OnConnectionFailedListener, LocationListener, ResultCallback<LocationSettingsResult>, DialogInterface.OnDismissListener {
 
     @InjectView(R.id.activity_main_start_stop_button) Button startStopButton;
+    @InjectView(R.id.activity_main_tutorial) RelativeLayout mTutorial;
 
     public static final int REQUEST_RESOLVE_ERROR = 1001;
     public static final String ERROR_DIALOG_TAG = "ERROR_DIALOG_TAG";
@@ -131,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     @Override public void onLocationChanged(Location location) {
+        Log.e(LOG_TAG, "onLocationChanged");
         LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
         ParseObject report = panicReportParseObjectParser.parse(new PanicReport(location.getLatitude(), location.getLongitude(), 1));
         report.put(PARSE_INSTALLATION, ParseInstallation.getCurrentInstallation());
@@ -185,5 +190,26 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override public void onDismiss(DialogInterface dialog) {
         resolvingError = false;
+    }
+
+    @OnClick(R.id.activity_main_report_location_button) public void reportThisLocation(View v){
+        connectToGooglePlayServices();
+    }
+
+    @OnClick(R.id.activity_main_show_tutorial) public void showTutorial(View v){
+        mTutorial.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.activity_main_tutorial) public void hideTutorial(View v){
+        mTutorial.setVisibility(View.GONE);
+    }
+
+    @Override public void onBackPressed() {
+        if (mTutorial.getVisibility() == View.VISIBLE) {
+            mTutorial.setVisibility(View.GONE);
+        } else {
+            finish();
+        }
+
     }
 }

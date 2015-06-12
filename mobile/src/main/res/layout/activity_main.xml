@@ -11,6 +11,7 @@
         android:layout_height="match_parent"/>
 
     <Button
+        android:id="@+id/activity_main_show_tutorial"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:text="@string/activity_main_how_it_works"
@@ -33,5 +34,35 @@
         android:id="@+id/activity_main_start_stop_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+    <Button
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/activity_main_report_this_location"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:id="@+id/activity_main_report_location_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:id="@+id/activity_main_tutorial"
+        android:layout_margin="20dp"
+        android:background="@android:color/white"
+        android:alpha="0.8"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:text="@string/activity_main_tutorial"
+            android:id="@+id/textView" />
+    </RelativeLayout>
 
 </RelativeLayout>
