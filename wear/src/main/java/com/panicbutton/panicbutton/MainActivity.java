@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.wearable.view.WatchViewStub;
 import android.widget.TextView;
 
-import com.panicbutton.common.PanicReport;
-
 public class MainActivity extends Activity {
 
     private TextView mTextView;

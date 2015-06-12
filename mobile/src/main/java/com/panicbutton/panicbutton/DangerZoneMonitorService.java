@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -173,6 +174,7 @@ public class DangerZoneMonitorService extends Service implements
             public void onResult(Status status) {
                 if (status.isSuccess()) {
                     Log.d("PanicButton", "Updating Danger Zones!");
+                    Toast.makeText(getApplicationContext(), "Updating Danger Zones!", Toast.LENGTH_SHORT);
                 }
             }
         });
@@ -190,6 +192,7 @@ public class DangerZoneMonitorService extends Service implements
                                        public void done(List<ParseObject> objects, ParseException e) {
                    if (e == null) {
                        Log.d("PanicButton", String.format("Objects retrieved: %d", objects.size()));
+                       Toast.makeText(getApplicationContext(), String.format("Objects retrieved: %d", objects.size()), Toast.LENGTH_SHORT);
                        List<DangerZone> dangerZones = new ArrayList<>();
                        for (Object object : objects) {
                            dangerZones.add(dangerZoneParser.parse(object));
@@ -210,6 +213,7 @@ public class DangerZoneMonitorService extends Service implements
             Status status = LocationServices.GeofencingApi.addGeofences(googleApiClient, DangerZoneGeofenceAdapter.toGeofences(dangerZones), getUpdatePendingIntent(DangerZoneEntranceService.class)).await();
             if (status.isSuccess()) {
                 Log.d("PanicButton", String.format("Started monitoring %d Danger Zones.", size));
+                Toast.makeText(getApplicationContext(), String.format("Started monitoring %d Danger Zones.", size), Toast.LENGTH_SHORT);
             }
         } else {
             Log.d("PanicButton", "No geofences to monitor.");

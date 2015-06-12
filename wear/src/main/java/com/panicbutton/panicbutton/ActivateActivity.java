@@ -23,8 +23,6 @@ import butterknife.OnClick;
  */
 public class ActivateActivity extends FragmentActivity {
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,20 +33,10 @@ public class ActivateActivity extends FragmentActivity {
 
     @OnClick(R.id.button)
     public void activateService(View view){
-        /*Intent intent = new Intent(this, DangerZoneMonitorService.class);
-        intent.setAction(DangerZoneMonitorService.ACTION_INITIALIZE);
-        startService(intent);*/
 
         Intent activateService = new Intent(this, ActivatePanicService.class);
         activateService.setAction(ActivatePanicService.ACTION_ACTIVATE_SERVICE);
         startService(activateService);
-
-        /*PendingIntent toggleAlarmIntent = PendingIntent.getService(this, 0, toggleAlarmOperation,
-                PendingIntent.FLAG_CANCEL_CURRENT);
-        Notification.Action alarmAction = new Notification.Action(R.drawable.alarm_action_icon, "", toggleAlarmIntent);*/
-
-
-
 
     }
 

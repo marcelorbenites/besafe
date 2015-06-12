@@ -20,6 +20,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -45,8 +46,6 @@ public class ActivatePanicService extends IntentService implements
     public static final String ACTION_ACTIVATE_SERVICE = "action_activate_service";
     public static final String FIELD_ACTIVATE_SERVICE = "field_activate_service";
 
-    // Timeout for making a connection to GoogleApiClient (in milliseconds).
-    private static final long CONNECTION_TIME_OUT_MS = 100;
     private GoogleApiClient mGoogleApiClient;
 
     Intent intentReceived;
@@ -63,36 +62,33 @@ public class ActivatePanicService extends IntentService implements
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-
         mGoogleApiClient.connect();
-
 
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        Log.e(LOG_TAG, "ON HANDLE INTENT");
-
+        Log.d(LOG_TAG, "onHandleIntent");
         intentReceived = intent;
 
     }
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        Log.e(LOG_TAG, "ON CONNECTED");
+        Log.d(LOG_TAG, "onConnected");
 
         PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(PATH_ACTIVATE_SERVICE);
         putDataMapRequest.getDataMap().putBoolean(FIELD_ACTIVATE_SERVICE, true);
         putDataMapRequest.getDataMap().putLong("data", new Date().getTime());
-//        Wearable.DataApi.putDataItem(mGoogleApiClient, putDataMapRequest.asPutDataRequest());
 
         Wearable.DataApi.putDataItem(mGoogleApiClient, putDataMapRequest.asPutDataRequest())
                 .setResultCallback(new ResultCallback<DataApi.DataItemResult>() {
                     @Override
                     public void onResult(DataApi.DataItemResult dataItemResult) {
-                        Log.e(LOG_TAG, "Calling start service was successful: " + dataItemResult.getStatus()
+                        Log.d(LOG_TAG, "Calling start service was successful: " + dataItemResult.getStatus()
                                 .isSuccess());
+                        Toast.makeText(getApplicationContext(), "Calling start service was successful", Toast.LENGTH_SHORT);
                     }
                 });
 
@@ -102,12 +98,12 @@ public class ActivatePanicService extends IntentService implements
 
     @Override
     public void onConnectionSuspended(int cause) {
-        Log.e(LOG_TAG, "ON CONNECTION SUSPENDED");
+        Log.d(LOG_TAG, "onConnectionSuspended");
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-        Log.e(LOG_TAG, "ON CONNECTION FAILED");
+        Log.d(LOG_TAG, "onConnectionFailed");
     }
 
 }
